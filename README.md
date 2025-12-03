@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # REEDU - Second-Hand Competitive Exam Books Marketplace
 
 REEDU is a full-stack web platform for buying, selling, exchanging, and renting second-hand competitive exam books (NEET, JEE, UPSC, CAT, etc.). Built with React, TypeScript, Vite, Tailwind CSS, and Supabase.
@@ -196,3 +197,6 @@ For issues, questions, or contributions, please open an issue on GitHub or conta
 ---
 
 Built with ❤️ for students by students
+=======
+# REEDU---Fullstack-Project
+>>>>>>> 375524bf997f47b972dfd533aebbf411df08d90a
