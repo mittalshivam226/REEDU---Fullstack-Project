@@ -36,26 +36,48 @@ export function Home() {
       <AnimatedHero />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8">Browse by Exam</h2>
+        <motion.h2
+          className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent mb-12 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          Browse by Exam Category
+        </motion.h2>
         <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-16"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 mb-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
         >
           {categories.slice(0, 10).map((category, index) => (
             <motion.div
               key={category.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: index * 0.1, type: "spring", stiffness: 100 }}
+              whileHover={{
+                scale: 1.05,
+                y: -5,
+                transition: { type: "spring", stiffness: 300 }
+              }}
             >
               <Link
                 to={`/browse?exam=${category.slug}`}
-                className="bg-white p-6 rounded-lg border-2 border-gray-200 hover:border-blue-600 hover:shadow-md transition text-center block"
+                className="group bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-gray-200 hover:border-blue-400 hover:shadow-xl transition-all duration-300 text-center block relative overflow-hidden"
               >
-                <div className="text-3xl mb-2">📚</div>
-                <h3 className="font-semibold text-gray-900">{category.name}</h3>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-purple-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <motion.div
+                  className="text-5xl mb-4 relative z-10"
+                  whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                  transition={{ duration: 0.3 }}
+                >
+                  📚
+                </motion.div>
+                <h3 className="font-bold text-gray-900 text-lg relative z-10 group-hover:text-blue-700 transition-colors duration-300">
+                  {category.name}
+                </h3>
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
               </Link>
             </motion.div>
           ))}

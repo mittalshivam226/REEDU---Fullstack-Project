@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 export function AnimatedBackground() {
-  // Floating particles
+  // Floating particles and book-themed elements
   const particles = Array.from({ length: 20 }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
@@ -10,6 +10,17 @@ export function AnimatedBackground() {
     size: Math.random() * 4 + 2,
     delay: Math.random() * 2,
     duration: Math.random() * 3 + 2,
+  }));
+
+  const bookIcons = ['📚', '📖', '📓', '📘', '📗', '📙'];
+  const floatingBooks = Array.from({ length: 8 }, (_, i) => ({
+    id: i,
+    icon: bookIcons[Math.floor(Math.random() * bookIcons.length)],
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 20 + 15,
+    delay: Math.random() * 4,
+    duration: Math.random() * 6 + 4,
   }));
 
   return (
@@ -63,6 +74,7 @@ export function AnimatedBackground() {
         animate={{
           scale: [1, 1.2, 1],
           opacity: [0.3, 0.6, 0.3],
+          x: [0, 20, 0],
         }}
         transition={{
           duration: 6,
@@ -76,6 +88,7 @@ export function AnimatedBackground() {
         animate={{
           scale: [1.2, 1, 1.2],
           opacity: [0.4, 0.7, 0.4],
+          x: [0, -30, 0],
         }}
         transition={{
           duration: 7,
@@ -84,6 +97,47 @@ export function AnimatedBackground() {
           delay: 1,
         }}
       />
+
+      <motion.div
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-indigo-400/5 to-teal-400/5 rounded-full blur-3xl"
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.2, 0.5, 0.2],
+          rotate: [0, 180, 360],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
+      />
+
+      {/* Floating book icons */}
+      {floatingBooks.map((book) => (
+        <motion.div
+          key={book.id}
+          className="absolute text-2xl opacity-20"
+          style={{
+            left: `${book.x}%`,
+            top: `${book.y}%`,
+            fontSize: book.size,
+          }}
+          animate={{
+            y: [0, -20, 0],
+            rotate: [0, 5, -5, 0],
+            opacity: [0.1, 0.3, 0.1],
+          }}
+          transition={{
+            duration: book.duration,
+            repeat: Infinity,
+            delay: book.delay,
+            ease: "easeInOut",
+          }}
+        >
+          {book.icon}
+        </motion.div>
+      ))}
 
       {/* Subtle grid pattern */}
       <div

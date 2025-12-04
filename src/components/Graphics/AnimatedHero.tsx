@@ -10,7 +10,7 @@ export function AnimatedHero() {
 
   return (
     <motion.div
-      className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-24 overflow-hidden"
+      className="relative bg-gradient-to-br from-blue-50 via-indigo-50 via-purple-50 to-pink-50 py-32 overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.2 }}
@@ -39,10 +39,17 @@ export function AnimatedHero() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.7 }}
+            whileHover={{ scale: 1.05 }}
           >
             Buy & Sell Used
             <br />
-            <span className="text-blue-600">Exam Books</span>
+            <motion.span
+              className="text-blue-600"
+              animate={{ color: ['#2563eb', '#7c3aed', '#2563eb'] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
+              Exam Books
+            </motion.span>
           </motion.h1>
           <motion.p
             className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed"
