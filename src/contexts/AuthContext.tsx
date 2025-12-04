@@ -22,7 +22,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Add loading timeout to prevent infinite loading
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (loading) {
+        console.warn('Auth loading timeout reached. Setting loading to false.');
+        setLoading(false);
+      }
+    }, 10000); // 10 seconds timeout
+
+    return () => clearTimeout(timeout);
+  }, [loading]);
+
+  useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user) {
@@ -50,6 +67,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const fetchProfile = async (userId: string) => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -67,6 +89,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signUp = async (email: string, password: string, displayName: string) => {
+    if (!supabase) {
+      return { error: new Error('Supabase not configured') };
+    }
+
     try {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
@@ -81,7 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .insert({
             user_id: authData.user.id,
             display_name: displayName,
-          } as any);
+          });
 
         if (profileError) throw profileError;
       }
@@ -107,6 +133,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
+    if (!supabase) {
+      setUser(null);
+      setProfile(null);
+      return;
+    }
+
     await supabase.auth.signOut();
     setUser(null);
     setProfile(null);
@@ -118,7 +150,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const { error } = await supabase
         .from('profiles')
-        .update({ ...updates, updated_at: new Date().toISOString() } as any)
+        .update({ ...updates, updated_at: new Date().toISOString() })
         .eq('user_id', user.id);
 
       if (error) throw error;
