@@ -3,43 +3,34 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  email     String    @unique
   password  String
   name      String
-  role      String   @default("USER")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role      String    @default("USER")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   listings  Listing[]
 }
 
 model Listing {
-  id          String     @id @default(cuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
   price       Float
   condition   String
   location    String
-  tags        String     // JSON string for tags array
+  tags        String[] // MongoDB supports arrays 
   edition     String?
   isbn        String?
-  userId      String
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  images      Image[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  images      String[] // Cleaned up image associations to raw urls
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
-
-model Image {
-  id        String   @id @default(cuid())
-  url       String
-  listingId String
-  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
-}
-
-
