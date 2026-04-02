@@ -31,7 +31,7 @@ export default function DashboardPage() {
     try {
       setLoading(true);
       const response = await listingsApi.getUserListings();
-      setListings(response.data);
+      setListings(response.data.listings || []);
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -182,8 +182,8 @@ export default function DashboardPage() {
                 <GlassCard className="p-4 flex flex-row items-center gap-4 hover:bg-[rgba(255,255,255,0.02)] transition-colors">
                   
                   <div className="w-20 h-24 rounded-md overflow-hidden bg-[#121212] flex-shrink-0 border border-[rgba(255,255,255,0.05)]">
-                    {listing.images.length > 0 ? (
-                      <img src={listing.images[0].url} alt={listing.title} className="w-full h-full object-cover" />
+                    {listing.images && listing.images.length > 0 ? (
+                      <img src={listing.images[0]} alt={listing.title} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <BookOpen size={20} className="text-[#52525B]" />

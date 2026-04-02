@@ -35,15 +35,9 @@ export interface Listing {
   isbn?: string;
   userId: string;
   user: User;
-  images: Image[];
+  images: string[];
   createdAt: string;
   updatedAt: string;
-}
-
-export interface Image {
-  id: string;
-  url: string;
-  listingId: string;
 }
 
 export interface LoginDto {
@@ -81,15 +75,21 @@ export const authApi = {
   profile: () => api.get<{ success: boolean; user: User }>('/auth/me'),
 };
 
+export interface ListingsResponse {
+  success: boolean;
+  count?: number;
+  listings: Listing[];
+}
+
 // Listings APIs
 export const listingsApi = {
   getAll: (params?: { search?: string; condition?: string; minPrice?: number; maxPrice?: number }) =>
-    api.get<Listing[]>('/listings', { params }),
-  getById: (id: string) => api.get<Listing>(`/listings/${id}`),
-  create: (data: CreateListingDto) => api.post<Listing>('/listings', data),
-  update: (id: string, data: Partial<CreateListingDto>) => api.patch<Listing>(`/listings/${id}`, data),
+    api.get<ListingsResponse>('/listings', { params }),
+  getById: (id: string) => api.get<{ success: boolean, listing: Listing }>(`/listings/${id}`),
+  create: (data: CreateListingDto) => api.post<{ success: boolean, listing: Listing }>('/listings', data),
+  update: (id: string, data: Partial<CreateListingDto>) => api.patch<{ success: boolean, listing: Listing }>(`/listings/${id}`, data),
   delete: (id: string) => api.delete(`/listings/${id}`),
-  getUserListings: () => api.get<Listing[]>('/listings/user'),
+  getUserListings: () => api.get<ListingsResponse>('/listings/user'),
 };
 
 // Users APIs

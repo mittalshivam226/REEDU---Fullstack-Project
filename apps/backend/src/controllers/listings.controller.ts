@@ -81,3 +81,15 @@ export const getListingById = async (req: Request, res: Response): Promise<void>
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const getUserListings = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const listings = await prisma.listing.findMany({
+      where: { userId: req.user.id },
+      orderBy: { createdAt: 'desc' }
+    });
+    res.status(200).json({ success: true, count: listings.length, listings });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

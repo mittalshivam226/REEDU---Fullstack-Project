@@ -1,11 +1,30 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Search } from 'lucide-react';
+import { listingsApi, Listing } from '@/lib/api';
+import Link from 'next/link';
 
 export default function MarketplacePage() {
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const response = await listingsApi.getAll();
+        setListings(response.data.listings || []);
+      } catch (error) {
+        console.error('Failed to fetch marketplace listings:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchListings();
+  }, []);
+
   return (
     <div className="min-h-screen pt-24 font-sans flex flex-col">
       <Navbar />
@@ -47,30 +66,52 @@ export default function MarketplacePage() {
             <div className="flex items-center gap-2 text-sm text-[#A1A1AA]">
               <span>Sort by:</span>
               <select className="bg-[#121212] border border-[rgba(255,255,255,0.1)] text-white rounded px-2 py-1 outline-none focus:border-primary">
-                <option>Relevance</option>
-                <option>Price: Low to High</option>
                 <option>Newest Listings</option>
+                <option>Price: Low to High</option>
               </select>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <GlassCard key={i} gradientHover className="cursor-pointer group flex flex-col h-full animate-fade-in-up" style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="w-full h-48 bg-[#1a1a1a] flex items-center justify-center p-4">
-                  <BookIcon />
-                </div>
-                <div className="p-5 flex flex-col flex-grow">
-                  <div className="text-secondary text-xs font-semibold mb-1 tracking-wider uppercase">Marketplace Item</div>
-                  <h3 className="text-white font-medium text-lg leading-tight mb-2 group-hover:text-primary transition-colors">Advanced Physics Module {i}</h3>
-                  <div className="mt-auto flex justify-between items-center text-sm pt-4 border-t border-[rgba(255,255,255,0.05)]">
-                    <span className="font-bold text-white">₹450</span>
-                    <span className="text-[#A1A1AA] text-xs">Delhi</span>
-                  </div>
-                </div>
-              </GlassCard>
-            ))}
-          </div>
+          {loading ? (
+             <div className="flex flex-col items-center py-32 w-full gap-4">
+               <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+               <span className="text-[#A1A1AA]">Fetching live inventory...</span>
+             </div>
+          ) : listings.length === 0 ? (
+             <div className="flex flex-col items-center justify-center py-32 text-center w-full">
+               <h3 className="text-xl text-white font-bold mb-2">No listings found</h3>
+               <p className="text-[#A1A1AA]">Be the first to create a listing on the marketplace!</p>
+             </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {listings.map((listing, i) => (
+                <Link key={listing.id} href={`/listings/${listing.id}`} className="block h-full">
+                  <GlassCard gradientHover className="cursor-pointer group flex flex-col h-full animate-fade-in-up" style={{ animationDelay: `${(i % 10) * 0.1}s` }}>
+                    <div className="w-full h-48 bg-[#1a1a1a] flex items-center justify-center p-0 rounded-t overflow-hidden">
+                      {listing.images && listing.images.length > 0 ? (
+                        <img src={listing.images[0]} alt={listing.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      ) : (
+                        <BookIcon />
+                      )}
+                    </div>
+                    <div className="p-5 flex flex-col flex-grow">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="text-secondary text-xs font-semibold tracking-wider uppercase">{listing.condition.replace('_', ' ')}</div>
+                        <div className="text-[#A1A1AA] text-xs px-2 py-0.5 rounded-full bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)]">{listing.user?.name || 'Anonymous'}</div>
+                      </div>
+                      <h3 className="text-white font-medium text-lg leading-tight mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {listing.title}
+                      </h3>
+                      <div className="mt-auto flex justify-between items-center text-sm pt-4 border-t border-[rgba(255,255,255,0.05)]">
+                        <span className="font-bold text-white text-lg font-[family-name:var(--font-space-grotesk)]">₹{listing.price}</span>
+                        <span className="text-[#A1A1AA] text-xs">{listing.location}</span>
+                      </div>
+                    </div>
+                  </GlassCard>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
       </main>
