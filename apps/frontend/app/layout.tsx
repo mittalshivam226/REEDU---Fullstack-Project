@@ -4,6 +4,7 @@ import { Inter, Space_Grotesk } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import { AuthProvider } from '@/components/providers/auth-provider';
 import { Toaster } from '@/components/ui/toaster';
+import { CustomCursor } from '@/components/ui/CustomCursor';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const spaceGrotesk = Space_Grotesk({
@@ -31,6 +32,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
+            <CustomCursor />
             <div className="relative min-h-screen flex flex-col bg-[#0A0A0A]">
               {/* Global Abstract Mesh Gradient Background */}
               <div className="fixed inset-0 z-[-1] pointer-events-none">
