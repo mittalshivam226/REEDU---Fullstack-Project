@@ -4,6 +4,9 @@ import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import path from 'path';
 
+import authRoutes from './routes/auth.routes';
+import listingRoutes from './routes/listings.routes';
+
 // Load the root environment variables
 dotenv.config({ path: path.join(__dirname, '../../../.env') });
 
@@ -12,6 +15,10 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// API Routers
+app.use('/api/auth', authRoutes);
+app.use('/api/listings', listingRoutes);
 
 app.get('/api/health', async (req, res) => {
   try {
