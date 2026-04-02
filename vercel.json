@@ -1,5 +1,4 @@
 {
-  "rootDirectory": "apps/frontend",
   "buildCommand": "npm run build:frontend",
-  "outputDirectory": ".next"
+  "outputDirectory": "apps/frontend/.next"
 }
