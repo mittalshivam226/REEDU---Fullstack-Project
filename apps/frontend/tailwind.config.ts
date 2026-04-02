@@ -20,46 +20,45 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        background: '#0A0A0A',
+        foreground: '#F5F5F5',
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+          DEFAULT: '#121212',
+          foreground: '#F5F5F5',
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
+          DEFAULT: '#121212',
+          foreground: '#F5F5F5',
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: '#8A2BE2', // Electric Violet
+          foreground: '#FFFFFF',
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: '#00F0FF', // Neon Cyan
+          foreground: '#0A0A0A',
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: '#1E1E1E',
+          foreground: '#A1A1AA',
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: '#2A2A2A',
+          foreground: '#FFFFFF',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: '#FF3B3B',
+          foreground: '#F5F5F5',
         },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))',
-        },
+        border: 'rgba(255, 255, 255, 0.1)',
+        input: 'rgba(255, 255, 255, 0.05)',
+        ring: '#8A2BE2',
+      },
+      boxShadow: {
+        'glow-primary': '0 0 15px rgba(138, 43, 226, 0.5)',
+        'glow-primary-lg': '0 0 30px rgba(138, 43, 226, 0.6)',
+        'glow-secondary': '0 0 15px rgba(0, 240, 255, 0.5)',
+        'glow-secondary-lg': '0 0 30px rgba(0, 240, 255, 0.6)',
       },
       keyframes: {
         'accordion-down': {

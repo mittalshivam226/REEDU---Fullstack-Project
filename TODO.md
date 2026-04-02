@@ -1,4 +1,0 @@
-- [ ] Update apps/backend/package.json: supertest to ^7.1.3, eslint to ^9.0.0
-- [ ] Update apps/frontend/package.json: move eslint to devDependencies and update to ^9.0.0
-- [ ] Run npm install in apps/backend
-- [ ] Run npm install in apps/frontend

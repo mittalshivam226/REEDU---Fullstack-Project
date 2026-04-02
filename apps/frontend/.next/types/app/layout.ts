@@ -1,4 +1,4 @@
-// File: C:\Users\mitta\Desktop\REEDU\apps\frontend\app\layout.tsx
+// File: C:\Users\mitta\Desktop\PROJECTS\REEDU\apps\frontend\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
