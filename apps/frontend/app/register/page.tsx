@@ -26,7 +26,7 @@ export default function RegisterPage() {
 
     try {
       const response = await authApi.register({ name, email, password });
-      login(response.data.user);
+      login(response.data.user, response.data.token);
       toast({
         title: 'Success',
         description: 'Account created successfully',

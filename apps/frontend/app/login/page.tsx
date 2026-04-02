@@ -25,7 +25,7 @@ export default function LoginPage() {
 
     try {
       const response = await authApi.login({ email, password });
-      login(response.data.user);
+      login(response.data.user, response.data.token);
       toast({
         title: 'Success',
         description: 'Logged in successfully',

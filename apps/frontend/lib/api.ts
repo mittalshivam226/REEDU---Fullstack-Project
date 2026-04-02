@@ -1,10 +1,18 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000/api';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true,
+});
+
+// Configure Axios to automatically attach the Auth JWT from localStorage
+api.interceptors.request.use((config) => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // Types based on Prisma schema
@@ -12,9 +20,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'USER' | 'ADMIN';
-  createdAt: string;
-  updatedAt: string;
+  role: string;
 }
 
 export interface Listing {
@@ -63,11 +69,16 @@ export interface CreateListingDto {
   images: string[];
 }
 
-// Auth APIs
+export interface AuthResponse {
+  success: boolean;
+  token: string;
+  user: User;
+}
+
 export const authApi = {
-  login: (data: LoginDto) => api.post<{ access_token: string; user: User }>('/auth/login', data),
-  register: (data: RegisterDto) => api.post<{ access_token: string; user: User }>('/auth/register', data),
-  profile: () => api.get<User>('/auth/profile'),
+  login: (data: LoginDto) => api.post<AuthResponse>('/auth/login', data),
+  register: (data: RegisterDto) => api.post<AuthResponse>('/auth/register', data),
+  profile: () => api.get<{ success: boolean; user: User }>('/auth/me'),
 };
 
 // Listings APIs

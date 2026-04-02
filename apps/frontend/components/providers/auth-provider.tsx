@@ -2,11 +2,11 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User } from '@/lib/api';
-import { getStoredUser, setStoredUser } from '@/lib/auth';
+import { getStoredUser, setStoredAuth } from '@/lib/auth';
 
 interface AuthContextType {
   user: User | null;
-  login: (user: User) => void;
+  login: (user: User, token: string) => void;
   logout: () => void;
   isLoading: boolean;
 }
@@ -30,19 +30,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // During boot sequence, we could trigger authApi.profile() here to validate token
+    // For now, load straight from fast caching logic
     const storedUser = getStoredUser();
     setUser(storedUser);
     setIsLoading(false);
   }, []);
 
-  const login = (userData: User) => {
+  const login = (userData: User, token: string) => {
     setUser(userData);
-    setStoredUser(userData);
+    setStoredAuth(userData, token);
   };
 
   const logout = () => {
     setUser(null);
-    setStoredUser(null);
+    setStoredAuth(null, null);
   };
 
   const value = {

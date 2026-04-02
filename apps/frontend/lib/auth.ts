@@ -12,11 +12,13 @@ export const getStoredUser = (): User | null => {
   return user ? JSON.parse(user) : null;
 };
 
-export const setStoredUser = (user: User | null) => {
+export const setStoredAuth = (user: User | null, token: string | null) => {
   if (typeof window === 'undefined') return;
-  if (user) {
+  if (user && token) {
     localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', token);
   } else {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 };
