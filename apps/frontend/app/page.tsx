@@ -18,13 +18,17 @@ export default function V4LandingPage() {
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
 
+  // Window bounds safely handled for SSR Next.js prerendering
+  const winWidth = typeof window !== 'undefined' ? window.innerWidth : 1000;
+  const winHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
+
   // Background Parallax Map
-  const bgX = useTransform(smoothX, [0, window.innerWidth || 1000], [-30, 30]);
-  const bgY = useTransform(smoothY, [0, window.innerHeight || 800], [-30, 30]);
+  const bgX = useTransform(smoothX, [0, winWidth], [-30, 30]);
+  const bgY = useTransform(smoothY, [0, winHeight], [-30, 30]);
 
   // Foreground Parallax Map (Opposite direction for 3D depth)
-  const fgX = useTransform(smoothX, [0, window.innerWidth || 1000], [30, -30]);
-  const fgY = useTransform(smoothY, [0, window.innerHeight || 800], [30, -30]);
+  const fgX = useTransform(smoothX, [0, winWidth], [30, -30]);
+  const fgY = useTransform(smoothY, [0, winHeight], [30, -30]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
